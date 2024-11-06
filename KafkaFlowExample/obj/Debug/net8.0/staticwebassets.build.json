@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "aoWtZBPICXOZ8/gVGkRNqlbEpc+bEujD1/TLVZHPtRw=",
+  "Source": "KafkaFlowExample",
+  "BasePath": "_content/KafkaFlowExample",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
