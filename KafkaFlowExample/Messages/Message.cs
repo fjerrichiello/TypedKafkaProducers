@@ -1,3 +1,6 @@
 ﻿namespace KafkaFlowExample.Messages;
 
-public abstract record Message(string Key);
+public abstract class Message
+{
+    public string Key { get; set; }
+};

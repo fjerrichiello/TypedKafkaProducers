@@ -3,4 +3,7 @@
 namespace KafkaFlowExample.Messages;
 
 [Message("TextMessageV1")]
-public record TestMessageV1(string Key, string Text) : Message(Key);
+public class TestMessageV1 : Message
+{
+    public string Text { get; set; }
+};

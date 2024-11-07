@@ -29,17 +29,7 @@ services
                     .WithBrokers(new[] { "localhost:9092" })
                     .CreateTopicIfNotExists(nameof(TestMessageV1), 6, 1)
                     .EnableAdminMessages("kafkaflow.admin")
-                    .AddProducers(typeof(TestMessageV1))
-                    .AddConsumer(consumer =>
-                    {
-                        consumer.Topic(nameof(TestMessageV1));
-                        consumer.WithGroupId("group");
-                        consumer.WithBufferSize(1);
-                        consumer.AddMiddlewares(middleware =>
-                        {
-                            middleware.AddTypedHandlers(handlers => handlers.AddHandler<TextMessageHandler>());
-                        });
-                    })
+                    .AddProducersAndConsumers(typeof(TestMessageV1))
             )
     );
 
@@ -58,15 +48,22 @@ services
         })
     .AddControllers();
 
-services.AddTypedProducers(typeof(TestMessageV1));
+// services.AddTypedProducers(typeof(TestMessageV1));
+
+services.AddSingleton(typeof(ITypedMessageProducer<>), typeof(TypedMessageProducer<>));
 var app = builder.Build();
 
 app.MapPost("/produce",
     async (ITypedMessageProducer<TestMessageV1> _producer, string text) =>
     {
-        await _producer.ProduceAsync(new TestMessageV1("Key", "Text"));
+        await _producer.ProduceAsync(new TestMessageV1
+        {
+            Key = Random.Shared.Next(10000).ToString(),
+            Text = text
+        });
         return Results.Ok();
     });
+
 app.MapControllers();
 
 app.UseSwagger();
